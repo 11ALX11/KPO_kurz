@@ -1,0 +1,3 @@
+#! /bin/bash
+
+docker exec -it basic-postgres-1 psql --username=postgres --dbname=postgres
