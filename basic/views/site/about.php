@@ -18,12 +18,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <h2>PHP extensions</h2>
 
     <p style="word-wrap: break-word;">
-        <?= json_encode(get_loaded_extensions()); ?>
+        <output><?= json_encode(get_loaded_extensions()); ?></output>
     </p>
 
     <h3>'SELECT * FROM pg_database;' example</h3>
     <p>
-        <?= json_encode(Yii::$app->db->createCommand('SELECT * FROM pg_database')->queryAll()); ?>
+        <output><?= json_encode(Yii::$app->db->createCommand('SELECT * FROM pg_database')->queryAll()); ?></output>
+    </p>
+
+    <p>
+        Hash for 'admin' is <output><?= app\models\Users::createHash('admin'); ?></output>
+    </p>
+    <p>
+        Hash for 'user' is <output><?= app\models\Users::createHash('user'); ?></output>
+    </p>
+
+    <p>
+        User id is <?= Yii::$app->user->getId() ?>
     </p>
 
     <code><?= __FILE__ ?></code>

@@ -3,7 +3,7 @@ services:
   yii2-php:
     image: yiisoftware/yii2-php:7.4-apache
     volumes:
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ../.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
     ports:
       - '8080:80'

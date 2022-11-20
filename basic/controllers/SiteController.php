@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Users;
 
 class SiteController extends Controller
 {
@@ -27,6 +28,19 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    /*[
+                        'actions' => ['about'],
+                        'allow' => true,
+                        'matchCallback' => function ($rule, $action) {
+                            if (Yii::$app->user->isGuest) {
+                                return false;
+                            }
+                            if (Users::findIdentity(Yii::$app->user->getId())->isAmdin()) {
+                                return true;
+                            }
+                            return false;
+                        }
+                    ],*/
                 ],
             ],
             'verbs' => [
