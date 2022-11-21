@@ -49,8 +49,14 @@ class UsersController extends \yii\web\Controller
             if ($user->password_hash != '') {
                 $user->password_hash = Users::createHash($user->password_hash);
                 
-                if ($user->save()) {
-                    return $this->redirect('index');
+                if ($user->validate() && $user->save()) {
+                    return $this->redirect('/users/index');
+                }
+                else {
+                    return $this->render('@app/views/site/error', [
+                        'name' => 'Error saving record',
+                        'message' => implode(', ', $user->getErrorSummary(true)),
+                    ]);
                 }
             }
         }
@@ -73,10 +79,28 @@ class UsersController extends \yii\web\Controller
             ]);
         }
 
-        if ($user->load(Yii::$app->request->post()) && $user->save()) {
-            return $this->redirect(Yii::$app->user->returnUrl);
+        $old_password = $user->password_hash;
+
+        if ($user->load(Yii::$app->request->post())) {
+            if ($user->password_hash != '') {
+                $user->password_hash = Users::createHash($user->password_hash);
+            }
+            else {
+                $user->password_hash = $old_password;
+            }
+            
+            if ($user->validate() && $user->save()) {
+                return $this->redirect('/users/index');
+            }
+            else {
+                return $this->render('@app/views/site/error', [
+                    'name' => 'Error saving record',
+                    'message' => implode(', ', $user->getErrorSummary(true)),
+                ]);
+            }
         }
 
+        $user->password_hash = '';
         $data['user'] = $user;
         return $this->render('edit', [
             'data' => $data,
@@ -111,7 +135,7 @@ class UsersController extends \yii\web\Controller
     public function actionRemove($id)
     {
         if (Users::findIdentity($id)->delete()) {
-            return $this->redirect(Yii::$app->user->returnUrl);
+            return $this->redirect('/users/index');
         }
 
         return $this->render('@app/views/site/error', [

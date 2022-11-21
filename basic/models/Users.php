@@ -44,7 +44,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'id' => 'ID',
             'name' => 'Name',
             'role' => 'Role',
-            'password_hash' => 'Password Hash',
+            'password_hash' => 'Password',
             'record_status' => 'Record Status',
         ];
     }
@@ -150,5 +150,18 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         $this->record_status = 'DELETED';
         return $this->save();
+    }
+
+    /**
+     * Deltes record by marking it's status as DELETED
+     *
+     * @return bool true if operation was succesfull
+     */
+    public static function getRoleDropDownListData()
+    {
+        return [
+            'USER' => 'User',
+            'ADMIN' => 'Admin',
+        ];
     }
 }
