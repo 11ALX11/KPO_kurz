@@ -16,7 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     the file <code><?= __FILE__; ?></code>.
 </p>
 
-<a href="<?= Url::to(['users/add']) ?>">Add new user</a>
+<a class="btn-add btn btn-outline-primary" href="<?= Url::to(['users/add']) ?>">Add new user</a>
+
 <table class="table table-light table-hover">
   <thead>
     <tr>
@@ -34,15 +35,14 @@ $this->params['breadcrumbs'][] = $this->title;
       <td><?= $user->role; ?></td>
       <td class='table-actions'>
             <a href="<?= Url::to(['users/edit/'.$user->id]) ?>">Edit</a>
-            <?= Html::beginForm([
-                    Url::to(['users/remove/'.$user->id]),
-                ])
-                    . Html::submitButton(
-                        'Remove',
-                        ['class' => 'table-actions-btn btn-link']
-                    )
-                    . Html::endForm()
-            ?>
+            <button 
+              class="table-actions-btn table-actions-remove-btn btn-link" 
+              type="button" 
+              data-bs-toggle="modal" 
+              data-bs-target="#RemoveModal" 
+              data-action=<?= Url::to(['users/remove/'.$user->id]) ?>
+              >Remove
+            </button>
       </td>
     </tr>
     <?php } ?>
@@ -53,3 +53,29 @@ $this->params['breadcrumbs'][] = $this->title;
     'pagination' => $data['pagination'],
 ]);
 ?>
+
+<div class="modal fade" id="RemoveModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">Warning!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You are going to delete user, are you sure?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <?= Html::beginForm([
+                    Url::to(['users/remove']),
+                ])
+                    . Html::submitButton(
+                        'Yes',
+                        ['class' => 'btn btn-danger']
+                    )
+                    . Html::endForm()
+            ?>
+      </div>
+    </div>
+  </div>
+</div>

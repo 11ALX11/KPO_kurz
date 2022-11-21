@@ -99,5 +99,11 @@ a.desc:after {
 .table-actions-btn {
     padding: 0;
     border: none;
+}
 
+.btn-add, .container > .btn-add {
+    margin-bottom: 16px;
+    margin-left: auto;
+    display: block;
+    max-width: fit-content;
 }
