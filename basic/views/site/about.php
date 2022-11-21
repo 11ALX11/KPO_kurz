@@ -5,7 +5,7 @@
 use yii\helpers\Html;
 use Yii;
 
-$this->title = 'About';
+$this->title = Yii::$app->name . ' - About';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">

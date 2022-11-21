@@ -1,7 +1,13 @@
 <?php
 /** @var yii\web\View $this */
+
+use yii\helpers\Html;
+
+$this->title = 'Edit user data';
+$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['users/index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<h1>users/edit</h1>
+<h1><?= Html::encode($this->title) ?></h1>
 
 <p>
     You may change the content of this page by modifying
