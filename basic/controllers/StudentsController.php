@@ -114,16 +114,27 @@ class StudentsController extends \yii\web\Controller
             'pagination' => [
                 'pageSize' => Yii::$app->params['pageSize'],
             ],
-            /*'sort' => [
-                'defaultOrder' => [
-                    'created_at' => SORT_DESC,
-                    'title' => SORT_ASC, 
-                ]
-            ],*/
+            'sort' => [
+                'attributes' => [
+                    'group',
+                    'name',
+                    'credit1',
+                    'credit2',
+                    'credit3',
+                    'credit4',
+                    'credit5',
+                    'exam1',
+                    'exam2',
+                    'exam3',
+                    'exam4',
+                    'exam5',
+                ],
+            ],
         ]);
 
         $data['students'] = $provider->getModels();
         $data['pagination'] = $provider->getPagination();
+        $data['sort'] = $provider->getSort();
 
         return $this->render('index', [
             'data' => $data,

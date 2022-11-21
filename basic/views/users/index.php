@@ -22,10 +22,18 @@ $this->params['breadcrumbs'][] = $this->title;
 <table class="table table-light table-hover">
   <thead>
     <tr>
-      <th scope="col" class="col-1">Id</th>
-      <th scope="col">Name</th>
-      <th scope="col">Role</th>
+      <th scope="col" class="col-1"><?= $data['sort']->link('id', ['label' => 'Id']) ?></th>
+      <th scope="col"><?= $data['sort']->link('name') ?></th>
+      <th scope="col"><?= $data['sort']->link('role') ?></th>
       <th scope="col" class="col-3">Actions</th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>

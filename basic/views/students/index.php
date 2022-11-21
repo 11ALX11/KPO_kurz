@@ -25,11 +25,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <table class="table table-light table-hover">
   <thead>
     <tr>
-      <th scope="col" class="col">Group №</th>
-      <th scope="col" class="col-2">Name</th>
-      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col" class="col">Credit №<?= $it ?></th><?php } ?>
-      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col" class="col">Exam №<?= $it ?></th><?php } ?>
+      <th scope="col" class="col-sm-1"><?= $data['sort']->link('group', ['label' => 'Group №']) ?></th>
+      <th scope="col" class="col-md-2"><?= $data['sort']->link('name') ?></th>
+      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col" class="col"><?= $data['sort']->link('credit'.$it, ['label' => (($it==1 ? 'Credit ' : '').'№'.$it)]) ?></th><?php } ?>
+      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col" class="col"><?= $data['sort']->link('exam'.$it, ['label' => (($it==1 ? 'Exam ' : '').'№'.$it)]) ?></th><?php } ?>
       <?php if ($is_admin) { ?><th scope="col" class="col-1">Actions</th><?php } ?>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col"></th><?php } ?>
+      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col"></th><?php } ?>
+      <?php if ($is_admin) { ?><th scope="col"></th><?php } ?>
     </tr>
   </thead>
   <tbody>
