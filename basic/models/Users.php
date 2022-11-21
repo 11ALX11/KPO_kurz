@@ -31,6 +31,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return [
             [['name', 'password_hash'], 'required'],
             [['name', 'role', 'password_hash', 'record_status'], 'string'],
+            [['name'], 'unique'],
         ];
     }
 
@@ -57,6 +58,9 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public static function findIdentity($id)
     {
         $user = static::findOne($id);
+        
+        if ($user == null) return $user;
+
         if ($user->record_status == 'DELETED') {
             return null;
         }

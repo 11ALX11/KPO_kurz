@@ -35,7 +35,7 @@ class m221120_183321_init extends Migration
         $this->execute('CREATE TABLE "users" (
           "id" bigserial NOT NULL,
           PRIMARY KEY ("id"),
-          "name" text NOT NULL,
+          "name" text NOT NULL UNIQUE,
           "role" role NOT NULL DEFAULT \'USER\',
           "password_hash" text NOT NULL,
           "record_status" record_st NOT NULL DEFAULT \'ACTIVE\'

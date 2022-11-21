@@ -6,7 +6,6 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\models\Users;
-use Exception;
 use yii\data\ActiveDataProvider;
 
 class UsersController extends \yii\web\Controller
@@ -45,12 +44,43 @@ class UsersController extends \yii\web\Controller
 
     public function actionAdd()
     {
-        return $this->render('add');
+        $user = new Users();
+        if ($user->load(Yii::$app->request->post())) {
+            if ($user->password_hash != '') {
+                $user->password_hash = Users::createHash($user->password_hash);
+                
+                if ($user->save()) {
+                    return $this->redirect('index');
+                }
+            }
+        }
+
+        $user->password_hash = '';
+        $data['user'] = $user;
+        return $this->render('add', [
+            'data' => $data,
+        ]);
     }
 
     public function actionEdit($id)
     {
-        return $this->render('edit');
+        $user = Users::findIdentity($id);
+
+        if ($user == null) {
+            return $this->render('@app/views/site/error', [
+                'name' => 'Error finding record',
+                'message' => 'Failed to find user with id = '.$id.' from table.',
+            ]);
+        }
+
+        if ($user->load(Yii::$app->request->post()) && $user->save()) {
+            return $this->redirect(Yii::$app->user->returnUrl);
+        }
+
+        $data['user'] = $user;
+        return $this->render('edit', [
+            'data' => $data,
+        ]);
     }
 
     public function actionIndex()
@@ -83,7 +113,7 @@ class UsersController extends \yii\web\Controller
         if (Users::findIdentity($id)->delete()) {
             return $this->redirect(Yii::$app->user->returnUrl);
         }
-        
+
         return $this->render('@app/views/site/error', [
             'name' => 'Error deleting record',
             'message' => 'Failed to remove user with id = '.$id.' from table.',
