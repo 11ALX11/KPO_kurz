@@ -12,8 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1><?= Html::encode($this->title) ?></h1>
 
 <p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
+  This is users page. Here you can see every admin and user!
 </p>
 
 <div class="above-table-btn-grp">

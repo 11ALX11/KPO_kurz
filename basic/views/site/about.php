@@ -11,31 +11,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        This is the About page. You may modify the following file to customize its content:
-    </p>
+    <p>To build and run web site such as this insn't particulary hard nor its easy.
+        Right choice while considering tools to use, also your expierence with them is what defines time and difficulty.</p>
+    
+    <p>This project uses yii2, a php framework and project's main rod.
+        I use Docker for it's amazing capabilities in portability.
+        And, at last I use PostgreSQL relational database! Very powerfull and most advanced open source relational database.
+        In fact, for this project its probably overkill. I should have considered MySQL.</p>
 
-    <h2>PHP extensions</h2>
-
-    <p style="word-wrap: break-word;">
-        <output><?= json_encode(get_loaded_extensions()); ?></output>
-    </p>
-
-    <h3>'SELECT * FROM pg_database;' example</h3>
-    <p>
-        <output><?= json_encode(Yii::$app->db->createCommand('SELECT * FROM pg_database')->queryAll()); ?></output>
-    </p>
-
-    <p>
-        Hash for 'admin' is <output><?= app\models\Users::createHash('admin'); ?></output>
-    </p>
-    <p>
-        Hash for 'user' is <output><?= app\models\Users::createHash('user'); ?></output>
-    </p>
-
-    <p>
-        User id is <?= Yii::$app->user->getId() ?>
-    </p>
-
-    <code><?= __FILE__ ?></code>
 </div>

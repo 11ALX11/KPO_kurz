@@ -15,8 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1><?= Html::encode($this->title) ?></h1>
 
 <p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
+    This is user creation page. Create new one!
 </p>
 
 <div class="row">
@@ -25,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'name')->label('Username')->textInput(['autofocus' => true]) ?>
 
-            <?= $form->field($model, 'password_hash') ?>
+            <?= $form->field($model, 'password_hash')->passwordInput() ?>
 
             <?= $form->field($model, 'role')->dropDownList(Users::getRoleDropDownListData()) ?>
 
