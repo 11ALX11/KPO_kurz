@@ -16,7 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     the file <code><?= __FILE__; ?></code>.
 </p>
 
-<a class="btn-add btn btn-outline-primary" href="<?= Url::to(['users/add']) ?>">Add new user</a>
+<div class="above-table-btn-grp">
+    <a class="btn btn-outline-primary" href="<?= Url::to(['users/add']) ?>">Add new user</a>
+</div>
 
 <table class="table table-light table-hover">
   <thead>

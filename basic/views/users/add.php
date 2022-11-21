@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
     <div class="col-lg-5">
-        <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
+        <?php $form = ActiveForm::begin(['id' => 'add-form']); ?>
 
             <?= $form->field($model, 'name')->label('Username')->textInput(['autofocus' => true]) ?>
 
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'role')->dropDownList(Users::getRoleDropDownListData()) ?>
 
             <div class="form-group">
-                <?= Html::submitButton('Add', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+                <?= Html::submitButton('Add', ['class' => 'btn btn-primary', 'name' => 'add-button']) ?>
             </div>
 
         <?php ActiveForm::end(); ?>

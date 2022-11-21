@@ -39,7 +39,9 @@ class Students extends \yii\db\ActiveRecord
     {
         return [
             [['group', 'exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'default', 'value' => null],
-            [['group', 'exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'integer'],
+            [['group'], 'integer', 'min' => Yii::$app->params['validGroupRange']['min'], 'max' => Yii::$app->params['validGroupRange']['max']],
+            [['exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'integer'],
+            [['exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'in', 'range' => Yii::$app->params['validExamMarks']],
             [['name'], 'required'],
             [['name', 'record_status'], 'string'],
             [['credit1', 'credit2', 'credit3', 'credit4', 'credit5'], 'boolean'],
@@ -69,8 +71,14 @@ class Students extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * Deletes record by marking it's status as DELETED
+     *
+     * @return bool true if operation was succesfull
+     */
     public function delete()
     {
-        return $this->record_status === 'DELETED';
+        $this->record_status = 'DELETED';
+        return $this->save();
     }
 }

@@ -6,6 +6,8 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\models\Users;
+use app\models\Students;
+use yii\data\ActiveDataProvider;
 
 class StudentsController extends \yii\web\Controller
 {
@@ -50,7 +52,23 @@ class StudentsController extends \yii\web\Controller
 
     public function actionAdd()
     {
-        return $this->render('add');
+        $student = new Students();
+        if ($student->load(Yii::$app->request->post())) {
+            if ($student->validate() && $student->save()) {
+                return $this->redirect('/students/index');
+            }
+            else {
+                return $this->render('@app/views/site/error', [
+                    'name' => 'Error saving record',
+                    'message' => implode(', ', $student->getErrorSummary(true)),
+                ]);
+            }
+        }
+
+        $data['student'] = $student;
+        return $this->render('add', [
+            'data' => $data,
+        ]);
     }
 
     public function actionDebts()
@@ -58,29 +76,70 @@ class StudentsController extends \yii\web\Controller
         return $this->render('debts');
     }
 
-    public function actionEdit()
+    public function actionEdit($id)
     {
-        return $this->render('edit');
+        $student = Students::findOne($id);
+
+        if ($student == null) {
+            return $this->render('@app/views/site/error', [
+                'name' => 'Error finding record',
+                'message' => 'Failed to find student with id = '.$id.' from table.',
+            ]);
+        }
+
+        if ($student->load(Yii::$app->request->post())) {
+            if ($student->validate() && $student->save()) {
+                return $this->redirect('/students/index');
+            }
+            else {
+                return $this->render('@app/views/site/error', [
+                    'name' => 'Error saving record',
+                    'message' => implode(', ', $student->getErrorSummary(true)),
+                ]);
+            }
+        }
+
+        $data['student'] = $student;
+        return $this->render('edit', [
+            'data' => $data,
+        ]);
     }
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $query = Students::find()->where(['record_status' => 'ACTIVE']);
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => Yii::$app->params['pageSize'],
+            ],
+            /*'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                    'title' => SORT_ASC, 
+                ]
+            ],*/
+        ]);
+
+        $data['students'] = $provider->getModels();
+        $data['pagination'] = $provider->getPagination();
+
+        return $this->render('index', [
+            'data' => $data,
+        ]);
     }
 
-    public function actionRemove()
+    public function actionRemove($id)
     {
-        return $this->redirect('students/index');
-    }
+        if (Students::findOne($id)->delete()) {
+            return $this->redirect('/students/index');
+        }
 
-    public function actionSearchByField()
-    {
-        return $this->redirect('students/index');
-    }
-
-    public function actionSortByField()
-    {
-        return $this->redirect('students/index');
+        return $this->render('@app/views/site/error', [
+            'name' => 'Error deleting record',
+            'message' => 'Failed to remove student with id = '.$id.' from table.',
+        ]);
     }
 
 }

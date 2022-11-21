@@ -101,9 +101,12 @@ a.desc:after {
     border: none;
 }
 
-.btn-add, .container > .btn-add {
-    margin-bottom: 16px;
-    margin-left: auto;
-    display: block;
+.above-table-btn-grp {
     max-width: fit-content;
+    margin-left: auto;
+    margin-bottom: 16px;
+}
+
+.above-table-btn-grp > .btn {
+    margin-left: 6px;
 }

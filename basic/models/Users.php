@@ -142,7 +142,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     * Deltes record by marking it's status as DELETED
+     * Deletes record by marking it's status as DELETED
      *
      * @return bool true if operation was succesfull
      */
@@ -153,7 +153,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     * Deltes record by marking it's status as DELETED
+     * Returns array for dropList field in ActiveField
      *
      * @return bool true if operation was succesfull
      */
