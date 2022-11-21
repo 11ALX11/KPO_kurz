@@ -137,8 +137,14 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->role === 'ADMIN';
     }
 
+    /**
+     * Deltes record by marking it's status as DELETED
+     *
+     * @return bool true if operation was succesfull
+     */
     public function delete()
     {
-        return $this->record_status === 'DELETED';
+        $this->record_status = 'DELETED';
+        return $this->save();
     }
 }

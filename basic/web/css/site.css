@@ -82,3 +82,22 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.pagination > li {
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.pagination > li > a {
+    text-decoration: none;
+}
+
+.table-actions > form {
+    display: inline;
+}
+
+.table-actions-btn {
+    padding: 0;
+    border: none;
+
+}

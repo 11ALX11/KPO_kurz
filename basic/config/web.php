@@ -51,6 +51,7 @@ $config = [
 
                 'users/' => "users/index",
                 'users/<action:[a-zA-Z0-9]+>' => "users/<action>",
+                'users/<action:[a-zA-Z0-9]+>/<id:[0-9]+>' => "users/<action>",
 
                 'students/' => "students/index",
                 'students/<action:[a-zA-Z0-9]+>' => "students/<action>",
