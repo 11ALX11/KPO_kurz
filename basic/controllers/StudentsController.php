@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\models\Users;
 use app\models\Students;
+use app\models\StudentsSearchForm;
 use yii\data\ActiveDataProvider;
 
 class StudentsController extends \yii\web\Controller
@@ -109,10 +110,38 @@ class StudentsController extends \yii\web\Controller
     {
         $query = Students::find()->where(['record_status' => 'ACTIVE']);
 
-        $search_model = new Students();
-        if ($search_model->load(Yii::$app->request->post())) {
+        $search_model = new StudentsSearchForm();
+        if ($search_model->load(Yii::$app->request->get())) {
+
+            if (isset($search_model->group) && !is_null($search_model->group)) {
+                if ($search_model->group != '' && $search_model->validate('group')) {
+                    $query = $query->andWhere(['group' => $search_model->group]);
+                }
+            }
+
+            if (isset($search_model->name) && !is_null($search_model->name)) {
+                if ($search_model->name != '' && $search_model->validate('name')) {
+                    $query = $query->andWhere('name ILIKE \'%'.$search_model->name.'%\'');
+                }
+            }
+
+            for ($it = 1; $it <= 5; $it++) {
+                
+                if (isset($search_model['credit'.$it]) && !is_null($search_model['credit'.$it])) {
+                    if (!empty($search_model['credit'.$it]) && $search_model->validate('credit'.$it)) {
+                        $query = $query->andWhere(['credit'.$it => $search_model['credit'.$it]]);
+                    }
+                }
+
+                if (isset($search_model['exam'.$it]) && !is_null($search_model['exam'.$it])) {
+                    if (!empty($search_model['exam'.$it]) && $search_model->validate('exam'.$it)) {
+                        $query = $query->andWhere(['exam'.$it => $search_model['exam'.$it]]);
+                    }
+                }
+            }
 
         }
+        $search_model->validate();
 
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -140,7 +169,8 @@ class StudentsController extends \yii\web\Controller
         $data['students'] = $provider->getModels();
         $data['pagination'] = $provider->getPagination();
         $data['sort'] = $provider->getSort();
-        $data['search_model'] = new Students();
+        $data['search_model'] = $search_model;
+        $data['errors'] = $search_model->getErrorSummary(true);
 
         return $this->render('index', [
             'data' => $data,

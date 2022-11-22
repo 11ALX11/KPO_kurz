@@ -6,18 +6,28 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\widgets\ActiveForm;
+use app\models\StudentsSearchForm;
 
 $is_admin = app\models\Users::findIdentity(Yii::$app->user->getId())->isAmdin();
 
 $this->title = 'Students';
 $this->params['breadcrumbs'][] = $this->title;
 $model = $data['search_model']; //search model
+$search_dropdown_list = StudentsSearchForm::getSearchCreditDropDownListData();
 ?>
 <h1><?= Html::encode($this->title) ?></h1>
 
 <p>
     This is students page. Here you can oversee each of them!
 </p>
+
+<?php if (!empty($data['errors'])) { ?>
+  <div class="alert alert-danger">
+      <?php foreach ($data['errors'] as $error) {
+          echo '<div>'.nl2br(Html::encode($error)).'</div>';
+      } ?>
+  </div>
+<?php } ?>
 
 <div class="above-table-btn-grp">
     <button type="submit" form="search-form" class="btn btn-outline-success btn-search">Search</button>
@@ -38,25 +48,16 @@ $model = $data['search_model']; //search model
   <thead>
     <?php $form = ActiveForm::begin([
       'id' => 'search-form',
-      'method' => 'post',
+      'method' => 'get',
+      'action' => [Url::to('students/index')],
       'fieldConfig' => [
         'template' => '{input}'
       ],
-      'enableClientValidation' => false,
-      'enableAjaxValidation' => false,
     ]) ?>
     <tr>
       <th scope="col"><?= $form->field($model, 'group') ?></th>
       <th scope="col"><?= $form->field($model, 'name') ?></th>
-      <?php for ($it = 1; $it <= 5; $it++) { ?>
-        <th scope="col">
-          <?= $form->field($model, 'credit'.$it, [
-            'options' => [
-              'class' => ''
-              ]
-            ])->checkbox([], false) ?>
-        </th>
-      <?php } ?>
+      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col"><?= $form->field($model, 'credit'.$it)->dropDownList($search_dropdown_list) ?></th><?php } ?>
       <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col"><?= $form->field($model, 'exam'.$it) ?></th><?php } ?>
       <?php if ($is_admin) { ?><th scope="col"></th><?php } ?>
     </tr>

@@ -115,23 +115,24 @@ class UsersController extends \yii\web\Controller
         $search_model = new UsersSearchForm();
         if ($search_model->load(Yii::$app->request->get())) {
 
-            if (isset($search_model->id)) {
+            if (isset($search_model->id) && !is_null($search_model->id)) {
                 if ($search_model->id != '' && $search_model->validate('id')) {
                     $query = $query->andWhere(['id' => $search_model->id]);
                 }
             }
 
-            if (isset($search_model->name)) {
+            if (isset($search_model->name) && !is_null($search_model->name)) {
                 if ($search_model->name != '' && $search_model->validate('name')) {
                     $query = $query->andWhere('name ILIKE \'%'.$search_model->name.'%\'');
                 }
             }
 
-            if (isset($search_model->role)) {
+            if (isset($search_model->role) && !is_null($search_model->role)) {
                 if (array_key_exists($search_model->role, Users::getRoleDropDownListData()) && $search_model->validate('role')) {
                     $query = $query->andWhere(['role' => $search_model->role]);
                 }
             }
+
         }
         $search_model->validate();
 
