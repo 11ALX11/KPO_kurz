@@ -7,9 +7,12 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\widgets\ActiveForm;
 use app\models\Users;
+use app\models\UsersSearchForm;
 
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
+
+$dropdown_list = Users::getRoleDropDownListData();
 $model = $data['search_model']
 ?>
 <h1><?= Html::encode($this->title) ?></h1>
@@ -17,6 +20,14 @@ $model = $data['search_model']
 <p>
   This is users page. Here you can see every admin and user!
 </p>
+
+<?php if (!empty($data['errors'])) { ?>
+  <div class="alert alert-danger">
+      <?php foreach ($data['errors'] as $error) {
+          echo '<div>'.nl2br(Html::encode($error)).'</div>';
+      } ?>
+  </div>
+<?php } ?>
 
 <div class="above-table-btn-grp">
     <button type="submit" form="search-form" class="btn btn-outline-success btn-search">Search</button>
@@ -35,17 +46,16 @@ $model = $data['search_model']
   <thead>
     <?php $form = ActiveForm::begin([
       'id' => 'search-form',
-      'method' => 'post',
+      'method' => 'get',
+      'action' => [Url::to('users/index')],
       'fieldConfig' => [
         'template' => '{input}'
       ],
-      'enableClientValidation' => false,
-      'enableAjaxValidation' => false,
     ]) ?>
     <tr>
       <th scope="col"><?= $form->field($model, 'id') ?></th>
       <th scope="col"><?= $form->field($model, 'name') ?></th>
-      <th scope="col"><?= $form->field($model, 'role')->dropDownList(array_merge(['0' => ''], Users::getRoleDropDownListData())) ?></th>
+      <th scope="col"><?= $form->field($model, 'role')->dropDownList(UsersSearchForm::getSearchRoleDropDownListData()) ?></th>
       <th scope="col"></th>
     </tr>
   <?php ActiveForm::end() ?>
@@ -55,7 +65,7 @@ $model = $data['search_model']
     <tr>
       <th scope="row"><?= $user->id ?></th>
       <td><?= Html::encode($user->name); ?></td>
-      <td><?= $user->role; ?></td>
+      <td><?= $dropdown_list[$user->role]; ?></td>
       <td class='table-actions'>
             <a href="<?= Url::to(['users/edit/'.$user->id]) ?>">Edit</a>
             <button 

@@ -32,7 +32,24 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['name', 'password_hash'], 'required'],
             [['name', 'role', 'password_hash', 'record_status'], 'string'],
             [['name'], 'unique'],
+            [['role'], 'validateRole'],
         ];
+    }
+
+    /**
+     * Validates the role.
+     * This method serves as the inline validation for role.
+     *
+     * @param string $attribute the attribute currently being validated
+     * @param array $params the additional name-value pairs given in the rule
+     */
+    public function validateRole($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            if (!array_key_exists($attribute, Users::getRoleDropDownListData())) {
+                $this->addError($attribute, 'Incorrect role.');
+            }
+        }
     }
 
     /**
