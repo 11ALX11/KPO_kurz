@@ -5,11 +5,13 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+use yii\widgets\ActiveForm;
 
 $is_admin = app\models\Users::findIdentity(Yii::$app->user->getId())->isAmdin();
 
 $this->title = 'Students';
 $this->params['breadcrumbs'][] = $this->title;
+$model = $data['search_model']; //search model
 ?>
 <h1><?= Html::encode($this->title) ?></h1>
 
@@ -18,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </p>
 
 <div class="above-table-btn-grp">
+    <button type="submit" form="search-form" class="btn btn-outline-success btn-search">Search</button>
     <a class="btn btn-outline-dark" href="<?= Url::to(['students/debts']) ?>">Student's debts</a>
     <?php if ($is_admin) { ?><a class="btn btn-outline-primary" href="<?= Url::to(['students/add']) ?>">Add new student</a><?php } ?>
 </div>
@@ -33,13 +36,31 @@ $this->params['breadcrumbs'][] = $this->title;
     </tr>
   </thead>
   <thead>
+    <?php $form = ActiveForm::begin([
+      'id' => 'search-form',
+      'method' => 'post',
+      'fieldConfig' => [
+        'template' => '{input}'
+      ],
+      'enableClientValidation' => false,
+      'enableAjaxValidation' => false,
+    ]) ?>
     <tr>
-      <th scope="col"></th>
-      <th scope="col"></th>
-      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col"></th><?php } ?>
-      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col"></th><?php } ?>
+      <th scope="col"><?= $form->field($model, 'group') ?></th>
+      <th scope="col"><?= $form->field($model, 'name') ?></th>
+      <?php for ($it = 1; $it <= 5; $it++) { ?>
+        <th scope="col">
+          <?= $form->field($model, 'credit'.$it, [
+            'options' => [
+              'class' => ''
+              ]
+            ])->checkbox([], false) ?>
+        </th>
+      <?php } ?>
+      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col"><?= $form->field($model, 'exam'.$it) ?></th><?php } ?>
       <?php if ($is_admin) { ?><th scope="col"></th><?php } ?>
     </tr>
+    <?php ActiveForm::end() ?>
   </thead>
   <tbody>
     <?php foreach ($data['students'] as $student) { ?>

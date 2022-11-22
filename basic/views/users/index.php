@@ -5,9 +5,12 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+use yii\widgets\ActiveForm;
+use app\models\Users;
 
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
+$model = $data['search_model']
 ?>
 <h1><?= Html::encode($this->title) ?></h1>
 
@@ -16,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </p>
 
 <div class="above-table-btn-grp">
+    <button type="submit" form="search-form" class="btn btn-outline-success btn-search">Search</button>
     <a class="btn btn-outline-primary" href="<?= Url::to(['users/add']) ?>">Add new user</a>
 </div>
 
@@ -23,18 +27,28 @@ $this->params['breadcrumbs'][] = $this->title;
   <thead>
     <tr>
       <th scope="col" class="col-1"><?= $data['sort']->link('id', ['label' => 'Id']) ?></th>
-      <th scope="col"><?= $data['sort']->link('name') ?></th>
+      <th scope="col"><?= $data['sort']->link('name', ['label' => 'Username']) ?></th>
       <th scope="col"><?= $data['sort']->link('role') ?></th>
       <th scope="col" class="col-3">Actions</th>
     </tr>
   </thead>
   <thead>
+    <?php $form = ActiveForm::begin([
+      'id' => 'search-form',
+      'method' => 'post',
+      'fieldConfig' => [
+        'template' => '{input}'
+      ],
+      'enableClientValidation' => false,
+      'enableAjaxValidation' => false,
+    ]) ?>
     <tr>
-      <th scope="col"></th>
-      <th scope="col"></th>
-      <th scope="col"></th>
+      <th scope="col"><?= $form->field($model, 'id') ?></th>
+      <th scope="col"><?= $form->field($model, 'name') ?></th>
+      <th scope="col"><?= $form->field($model, 'role')->dropDownList(array_merge(['0' => ''], Users::getRoleDropDownListData())) ?></th>
       <th scope="col"></th>
     </tr>
+  <?php ActiveForm::end() ?>
   </thead>
   <tbody>
     <?php foreach ($data['users'] as $user) { ?>

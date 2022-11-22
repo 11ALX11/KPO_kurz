@@ -153,9 +153,9 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     * Returns array for dropList field in ActiveField
+     * Returns array for dropList
      *
-     * @return bool true if operation was succesfull
+     * @return array array for dropList field in ActiveField
      */
     public static function getRoleDropDownListData()
     {

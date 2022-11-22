@@ -111,6 +111,29 @@ class UsersController extends \yii\web\Controller
     {
         $query = Users::find()->where(['record_status' => 'ACTIVE']);
 
+        $search_model = new Users();
+        if (isset($_POST['Users']['id'])) $id = $_POST['Users']['id']; //since id cant be got in ActiveRecord
+        if ($search_model->load(Yii::$app->request->post())) {
+
+            if (isset($id)) {
+                if ($id != '') {
+                    $query = $query->andWhere(['id' => $id]);
+                }
+            }
+
+            if (isset($search_model->name)) {
+                if ($search_model->name != '') {
+                    $query = $query->andWhere('name ILIKE \'%'.$search_model->name.'%\'');
+                }
+            }
+
+            if (isset($search_model->role)) {
+                if (array_key_exists($search_model->role, Users::getRoleDropDownListData())) {
+                    $query = $query->andWhere(['role' => $search_model->role]);
+                }
+            }
+        }
+
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -128,6 +151,7 @@ class UsersController extends \yii\web\Controller
         $data['users'] = $provider->getModels();
         $data['pagination'] = $provider->getPagination();
         $data['sort'] = $provider->getSort();
+        $data['search_model'] = new Users();
 
         return $this->render('index', [
             'data' => $data,

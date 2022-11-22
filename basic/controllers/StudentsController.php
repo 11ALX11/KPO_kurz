@@ -109,6 +109,11 @@ class StudentsController extends \yii\web\Controller
     {
         $query = Students::find()->where(['record_status' => 'ACTIVE']);
 
+        $search_model = new Students();
+        if ($search_model->load(Yii::$app->request->post())) {
+
+        }
+
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -135,6 +140,7 @@ class StudentsController extends \yii\web\Controller
         $data['students'] = $provider->getModels();
         $data['pagination'] = $provider->getPagination();
         $data['sort'] = $provider->getSort();
+        $data['search_model'] = new Students();
 
         return $this->render('index', [
             'data' => $data,
