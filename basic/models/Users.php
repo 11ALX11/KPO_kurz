@@ -46,7 +46,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function validateRole($attribute, $params)
     {
         if (!$this->hasErrors()) {
-            if (!array_key_exists($attribute, Users::getRoleDropDownListData())) {
+            if (!array_key_exists($this->$attribute, Users::getRoleDropDownListData())) {
                 $this->addError($attribute, 'Incorrect role.');
             }
         }

@@ -56,6 +56,7 @@ class StudentsController extends \yii\web\Controller
         $student = new Students();
         if ($student->load(Yii::$app->request->post())) {
             if ($student->validate() && $student->save()) {
+                Yii::$app->session->setFlash('studentsAlert', 'You have successfully added new student!');
                 return $this->redirect('/students/index');
             }
             else {
@@ -90,6 +91,7 @@ class StudentsController extends \yii\web\Controller
 
         if ($student->load(Yii::$app->request->post())) {
             if ($student->validate() && $student->save()) {
+                Yii::$app->session->setFlash('studentsAlert', 'You have successfully edited student!');
                 return $this->redirect('/students/index');
             }
             else {
@@ -114,13 +116,13 @@ class StudentsController extends \yii\web\Controller
         if ($search_model->load(Yii::$app->request->get())) {
 
             if (isset($search_model->group) && !is_null($search_model->group)) {
-                if ($search_model->group != '' && $search_model->validate('group')) {
+                if (!empty($search_model->group) && $search_model->validate('group')) {
                     $query = $query->andWhere(['group' => $search_model->group]);
                 }
             }
 
             if (isset($search_model->name) && !is_null($search_model->name)) {
-                if ($search_model->name != '' && $search_model->validate('name')) {
+                if (!empty($search_model->name) && $search_model->validate('name')) {
                     $query = $query->andWhere('name ILIKE \'%'.$search_model->name.'%\'');
                 }
             }
@@ -180,6 +182,7 @@ class StudentsController extends \yii\web\Controller
     public function actionRemove($id)
     {
         if (Students::findOne($id)->delete()) {
+            Yii::$app->session->setFlash('studentsRemoveAlert', 'You have successfully removed student!');
             return $this->redirect('/students/index');
         }
 

@@ -51,6 +51,7 @@ class UsersController extends \yii\web\Controller
                 $user->password_hash = Users::createHash($user->password_hash);
                 
                 if ($user->validate() && $user->save()) {
+                    Yii::$app->session->setFlash('usersAlert', 'You have successfully added user!');
                     return $this->redirect('/users/index');
                 }
                 else {
@@ -91,6 +92,7 @@ class UsersController extends \yii\web\Controller
             }
             
             if ($user->validate() && $user->save()) {
+                Yii::$app->session->setFlash('usersAlert', 'You have successfully edited user!');
                 return $this->redirect('/users/index');
             }
             else {
@@ -116,13 +118,13 @@ class UsersController extends \yii\web\Controller
         if ($search_model->load(Yii::$app->request->get())) {
 
             if (isset($search_model->id) && !is_null($search_model->id)) {
-                if ($search_model->id != '' && $search_model->validate('id')) {
+                if (!empty($search_model->id) && $search_model->validate('id')) {
                     $query = $query->andWhere(['id' => $search_model->id]);
                 }
             }
 
             if (isset($search_model->name) && !is_null($search_model->name)) {
-                if ($search_model->name != '' && $search_model->validate('name')) {
+                if (!empty($search_model->name) && $search_model->validate('name')) {
                     $query = $query->andWhere('name ILIKE \'%'.$search_model->name.'%\'');
                 }
             }
@@ -164,6 +166,7 @@ class UsersController extends \yii\web\Controller
     public function actionRemove($id)
     {
         if (Users::findIdentity($id)->delete()) {
+            Yii::$app->session->setFlash('usersRemoveAlert', 'You have successfully removed user!');
             return $this->redirect('/users/index');
         }
 

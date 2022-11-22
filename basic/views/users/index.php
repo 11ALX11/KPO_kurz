@@ -21,6 +21,17 @@ $model = $data['search_model']
   This is users page. Here you can see every admin and user!
 </p>
 
+<?php if (Yii::$app->session->hasFlash('usersAlert')) { ?>
+  <div class="alert alert-success">
+      <?= nl2br(Html::encode( Yii::$app->session->getFlash('usersAlert') )); ?>
+  </div>
+<?php } ?>
+<?php if (Yii::$app->session->hasFlash('usersRemoveAlert')) { ?>
+  <div class="alert alert-warning">
+      <?= nl2br(Html::encode( Yii::$app->session->getFlash('usersRemoveAlert') )); ?>
+  </div>
+<?php } ?>
+
 <?php if (!empty($data['errors'])) { ?>
   <div class="alert alert-danger">
       <?php foreach ($data['errors'] as $error) {

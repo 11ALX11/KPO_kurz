@@ -21,6 +21,17 @@ $search_dropdown_list = StudentsSearchForm::getSearchCreditDropDownListData();
     This is students page. Here you can oversee each of them!
 </p>
 
+<?php if (Yii::$app->session->hasFlash('studentsAlert')) { ?>
+  <div class="alert alert-success">
+      <?= nl2br(Html::encode( Yii::$app->session->getFlash('studentsAlert') )); ?>
+  </div>
+<?php } ?>
+<?php if (Yii::$app->session->hasFlash('studentsRemoveAlert')) { ?>
+  <div class="alert alert-warning">
+      <?= nl2br(Html::encode( Yii::$app->session->getFlash('studentsRemoveAlert') )); ?>
+  </div>
+<?php } ?>
+
 <?php if (!empty($data['errors'])) { ?>
   <div class="alert alert-danger">
       <?php foreach ($data['errors'] as $error) {
@@ -39,9 +50,9 @@ $search_dropdown_list = StudentsSearchForm::getSearchCreditDropDownListData();
   <thead>
     <tr>
       <th scope="col" class="col-sm-1"><?= $data['sort']->link('group', ['label' => 'Group №']) ?></th>
-      <th scope="col" class="col-md-2"><?= $data['sort']->link('name') ?></th>
-      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col" class="col"><?= $data['sort']->link('credit'.$it, ['label' => (($it==1 ? 'Credit ' : '').'№'.$it)]) ?></th><?php } ?>
-      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col" class="col"><?= $data['sort']->link('exam'.$it, ['label' => (($it==1 ? 'Exam ' : '').'№'.$it)]) ?></th><?php } ?>
+      <th scope="col" class="col-3"><?= $data['sort']->link('name') ?></th>
+      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col" class="<?= ($it == 1) ? 'col-1' : 'col' ?>"><?= $data['sort']->link('credit'.$it, ['label' => (($it==1 ? 'Credit ' : '').'№'.$it)]) ?></th><?php } ?>
+      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col" class="<?= ($it == 1) ? 'col-1' : 'col' ?>"><?= $data['sort']->link('exam'.$it, ['label' => (($it==1 ? 'Exam ' : '').'№'.$it)]) ?></th><?php } ?>
       <?php if ($is_admin) { ?><th scope="col" class="col-1">Actions</th><?php } ?>
     </tr>
   </thead>
@@ -57,7 +68,7 @@ $search_dropdown_list = StudentsSearchForm::getSearchCreditDropDownListData();
     <tr>
       <th scope="col"><?= $form->field($model, 'group') ?></th>
       <th scope="col"><?= $form->field($model, 'name') ?></th>
-      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col"><?= $form->field($model, 'credit'.$it)->dropDownList($search_dropdown_list) ?></th><?php } ?>
+      <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col"><?= $form->field($model, 'credit'.$it, ['options' => ['class' => 'min-width-field']])->dropDownList($search_dropdown_list) ?></th><?php } ?>
       <?php for ($it = 1; $it <= 5; $it++) { ?><th scope="col"><?= $form->field($model, 'exam'.$it) ?></th><?php } ?>
       <?php if ($is_admin) { ?><th scope="col"></th><?php } ?>
     </tr>

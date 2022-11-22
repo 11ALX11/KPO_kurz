@@ -104,9 +104,13 @@ a.desc:after {
 .above-table-btn-grp {
     max-width: fit-content;
     margin-left: auto;
-    margin-bottom: 16px;
 }
 
 .above-table-btn-grp > .btn {
     margin-left: 6px;
+    margin-bottom: 16px;
+}
+
+.min-width-field {
+    min-width: 60px;
 }
