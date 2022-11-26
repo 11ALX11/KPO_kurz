@@ -41,8 +41,8 @@ class StudentsSearchForm extends yii\base\Model {
     public function rules()
     {
         return [
-            [['group'], 'integer', 'min' => Yii::$app->params['validGroupRange']['min'], 'max' => Yii::$app->params['validGroupRange']['max']],
-            [['exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'integer'],
+            [['group'], 'string', 'min' => Yii::$app->params['validGroupRange']['min'], 'max' => Yii::$app->params['validGroupRange']['max']],
+            [['group', 'exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'integer'],
             [['exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'in', 'range' => Yii::$app->params['validExamMarks']],
             [['name'], 'string'],
             [['credit1', 'credit2', 'credit3', 'credit4', 'credit5'], 'boolean'],

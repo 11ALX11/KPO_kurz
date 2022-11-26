@@ -26,19 +26,6 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-                    /*[
-                        'actions' => ['about'],
-                        'allow' => true,
-                        'matchCallback' => function ($rule, $action) {
-                            if (Yii::$app->user->isGuest) {
-                                return false;
-                            }
-                            if (Users::findIdentity(Yii::$app->user->getId())->isAmdin()) {
-                                return true;
-                            }
-                            return false;
-                        }
-                    ],*/
                 ],
             ],
             'verbs' => [
@@ -58,10 +45,6 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
     }

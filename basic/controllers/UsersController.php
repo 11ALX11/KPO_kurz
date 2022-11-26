@@ -118,13 +118,13 @@ class UsersController extends \yii\web\Controller
         if ($search_model->load(Yii::$app->request->get())) {
 
             if (isset($search_model->id) && !is_null($search_model->id)) {
-                if (!empty($search_model->id) && $search_model->validate('id')) {
+                if ($search_model->id != '' && $search_model->validate('id')) {
                     $query = $query->andWhere(['id' => $search_model->id]);
                 }
             }
 
             if (isset($search_model->name) && !is_null($search_model->name)) {
-                if (!empty($search_model->name) && $search_model->validate('name')) {
+                if ($search_model->name != '' && $search_model->validate('name')) {
                     $query = $query->andWhere('name ILIKE \'%'.$search_model->name.'%\'');
                 }
             }

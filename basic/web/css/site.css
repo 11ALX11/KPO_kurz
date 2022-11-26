@@ -99,6 +99,7 @@ a.desc:after {
 .table-actions-btn {
     padding: 0;
     border: none;
+    background: none;
 }
 
 .above-table-btn-grp {

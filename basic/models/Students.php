@@ -39,8 +39,8 @@ class Students extends \yii\db\ActiveRecord
     {
         return [
             [['group', 'exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'default', 'value' => null],
-            [['group'], 'integer', 'min' => Yii::$app->params['validGroupRange']['min'], 'max' => Yii::$app->params['validGroupRange']['max']],
-            [['exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'integer'],
+            [['group'], 'string', 'min' => Yii::$app->params['validGroupRange']['min'], 'max' => Yii::$app->params['validGroupRange']['max']],
+            [['group', 'exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'integer'],
             [['exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'in', 'range' => Yii::$app->params['validExamMarks']],
             [['name'], 'required'],
             [['name', 'record_status'], 'string'],

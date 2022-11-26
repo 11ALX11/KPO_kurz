@@ -119,6 +119,9 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public static function findByUsername($username)
     {
         $user = static::findOne(['name' => $username]);
+        
+        if ($user == null) return $user;
+        
         if ($user->record_status == 'DELETED') {
             return null;
         }

@@ -116,13 +116,13 @@ class StudentsController extends \yii\web\Controller
         if ($search_model->load(Yii::$app->request->get())) {
 
             if (isset($search_model->group) && !is_null($search_model->group)) {
-                if (!empty($search_model->group) && $search_model->validate('group')) {
+                if ($search_model->group != '' && $search_model->validate('group')) {
                     $query = $query->andWhere(['group' => $search_model->group]);
                 }
             }
 
             if (isset($search_model->name) && !is_null($search_model->name)) {
-                if (!empty($search_model->name) && $search_model->validate('name')) {
+                if ($search_model->name != '' && $search_model->validate('name')) {
                     $query = $query->andWhere('name ILIKE \'%'.$search_model->name.'%\'');
                 }
             }
@@ -130,13 +130,13 @@ class StudentsController extends \yii\web\Controller
             for ($it = 1; $it <= 5; $it++) {
                 
                 if (isset($search_model['credit'.$it]) && !is_null($search_model['credit'.$it])) {
-                    if (!empty($search_model['credit'.$it]) && $search_model->validate('credit'.$it)) {
+                    if ($search_model['credit'.$it] != '' && $search_model->validate('credit'.$it)) {
                         $query = $query->andWhere(['credit'.$it => $search_model['credit'.$it]]);
                     }
                 }
 
                 if (isset($search_model['exam'.$it]) && !is_null($search_model['exam'.$it])) {
-                    if (!empty($search_model['exam'.$it]) && $search_model->validate('exam'.$it)) {
+                    if ($search_model['exam'.$it] != '' && $search_model->validate('exam'.$it)) {
                         $query = $query->andWhere(['exam'.$it => $search_model['exam'.$it]]);
                     }
                 }
