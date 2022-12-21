@@ -24,6 +24,11 @@ use Yii;
  */
 class Students extends \yii\db\ActiveRecord
 {
+
+    public $debts;
+    public $avr_score;
+    public $avr_group_score;
+
     /**
      * {@inheritdoc}
      */

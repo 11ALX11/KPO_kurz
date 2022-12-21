@@ -75,7 +75,61 @@ class StudentsController extends \yii\web\Controller
 
     public function actionDebts()
     {
-        return $this->render('debts');
+        $query = Students::find()->select('group, name, AS debts, AS avr_score, AVG(avr_score) AS avr_group_score')->where(['record_status' => 'ACTIVE']);
+
+        $search_model = new StudentsSearchForm();
+        if ($search_model->load(Yii::$app->request->get())) {
+
+            if (isset($search_model->group) && !is_null($search_model->group)) {
+                if ($search_model->group != '' && $search_model->validate('group')) {
+                    $query = $query->andWhere(['group' => $search_model->group]);
+                }
+            }
+
+            if (isset($search_model->name) && !is_null($search_model->name)) {
+                if ($search_model->name != '' && $search_model->validate('name')) {
+                    $query = $query->andWhere('name ILIKE \'%'.$search_model->name.'%\'');
+                }
+            }
+
+            if (isset($search_model['debts']) && !is_null($search_model['debts'])) {
+                if ($search_model['debts'] != '' && $search_model->validate('debts')) {
+                    $query = $query->andWhere(['debts' => $search_model['debts']]);
+                }
+            }
+
+            if (isset($search_model['avr_score']) && !is_null($search_model['avr_score'])) {
+                if ($search_model['avr_score'] != '' && $search_model->validate('avr_score')) {
+                    $query = $query->andWhere(['avr_score' => $search_model['avr_score']]);
+                }
+            }
+
+            if (isset($search_model['avr_group_score']) && !is_null($search_model['avr_group_score'])) {
+                if ($search_model['avr_group_score'] != '' && $search_model->validate('avr_group_score')) {
+                    $query = $query->andWhere(['avr_group_score' => $search_model['avr_group_score']]);
+                }
+            }
+
+        }
+        $search_model->validate();
+
+        $query->orderBy(['debts' => SORT_DESC]);
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => Yii::$app->params['pageSize'],
+            ],
+        ]);
+
+        $data['students'] = $provider->getModels();
+        $data['pagination'] = $provider->getPagination();
+        $data['search_model'] = $search_model;
+        $data['errors'] = $search_model->getErrorSummary(true);
+
+        return $this->render('index', [
+            'data' => $data,
+        ]);
     }
 
     public function actionEdit($id)
