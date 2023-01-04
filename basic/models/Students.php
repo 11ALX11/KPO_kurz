@@ -101,12 +101,15 @@ class Students extends \yii\db\ActiveRecord
             ->where('"group" = \''. $this->group .'\' AND "record_status" = \'ACTIVE\'')
             ->all();
         
-        if (count($models) > 0) {
-            $sum = 0;
-            foreach ($models as $model) {
-                $sum += $model->avr_score;
+        $sum = 0; $n = 0;
+        foreach ($models as $model) {
+            $sum += $model->avr_score;
+            if ( is_null($model->avr_score) ) {
+                $n++;
             }
-            $avg = $sum / count($models);
+        }
+        if (count($models) - $n > 0) {
+            $avg = $sum / (count($models) - $n);
 
             $this->avr_group_score = $avg;
             Students::updateAll(['avr_group_score' => $avg], ['group' => $this->group]);
