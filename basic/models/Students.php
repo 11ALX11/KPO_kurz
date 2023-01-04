@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "students".
  *
  * @property int $id
- * @property int|null $group
+ * @property string|null $group
  * @property string $name
  * @property bool|null $credit1
  * @property bool|null $credit2
@@ -21,13 +21,12 @@ use Yii;
  * @property int|null $exam4
  * @property int|null $exam5
  * @property string $record_status
+ * @property int|null $debts
+ * @property int|null $avr_score
+ * @property int|null $avr_group_score
  */
 class Students extends \yii\db\ActiveRecord
 {
-
-    public $debts;
-    public $avr_score;
-    public $avr_group_score;
 
     /**
      * {@inheritdoc}
@@ -45,7 +44,8 @@ class Students extends \yii\db\ActiveRecord
         return [
             [['group', 'exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'default', 'value' => null],
             [['group'], 'string', 'min' => Yii::$app->params['validGroupRange']['min'], 'max' => Yii::$app->params['validGroupRange']['max']],
-            [['group', 'exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'integer'],
+            [['group', 'exam1', 'exam2', 'exam3', 'exam4', 'exam5', 'debts'], 'integer'],
+            [['avr_score', 'avr_group_score'], 'number'],
             [['exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'in', 'range' => Yii::$app->params['validExamMarks']],
             [['name'], 'required'],
             [['name', 'record_status'], 'string'],
@@ -73,6 +73,9 @@ class Students extends \yii\db\ActiveRecord
             'exam4' => 'Exam4',
             'exam5' => 'Exam5',
             'record_status' => 'Record Status',
+            'debts' => 'Debts',
+            'avr_score' => 'Avr. Score',
+            'avr_group_score' => 'Avr. Group Score',
         ];
     }
 
@@ -85,5 +88,32 @@ class Students extends \yii\db\ActiveRecord
     {
         $this->record_status = 'DELETED';
         return $this->save();
+    }
+
+    /**
+     * Updates avr_group_score
+     *
+     * @return void
+     */
+    public function updateAvrGroupScore()
+    {
+        $models = Students::find()
+            ->where('"group" = \''. $this->group .'\' AND "record_status" = \'ACTIVE\'')
+            ->all();
+        
+        if (count($models) > 0) {
+            $sum = 0;
+            foreach ($models as $model) {
+                $sum += $model->avr_score;
+            }
+            $avg = $sum / count($models);
+
+            $this->avr_group_score = $avg;
+            Students::updateAll(['avr_group_score' => $avg], ['group' => $this->group]);
+        }
+        else {
+            $this->avr_group_score = null;
+            $this->save();
+        }
     }
 }

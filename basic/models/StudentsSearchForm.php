@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for search form in students/index.
+ * This is the model class for search form in students/index and students/debts.
  *
  * @property int|null $group
  * @property string $name
@@ -19,6 +19,9 @@ use Yii;
  * @property int|null $exam3
  * @property int|null $exam4
  * @property int|null $exam5
+ * @property int|null $debts
+ * @property int|null $avr_score
+ * @property int|null $avr_group_score
  */
 class StudentsSearchForm extends yii\base\Model {
 
@@ -34,6 +37,9 @@ class StudentsSearchForm extends yii\base\Model {
     public $exam3;
     public $exam4;
     public $exam5;
+    public $debts;
+    public $avr_score;
+    public $avr_group_score;
 
     /**
      * {@inheritdoc}
@@ -42,7 +48,8 @@ class StudentsSearchForm extends yii\base\Model {
     {
         return [
             [['group'], 'string', 'min' => Yii::$app->params['validGroupRange']['min'], 'max' => Yii::$app->params['validGroupRange']['max']],
-            [['group', 'exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'integer'],
+            [['group', 'exam1', 'exam2', 'exam3', 'exam4', 'exam5', 'debts'], 'integer'],
+            [['avr_score', 'avr_group_score'], 'number'],
             [['exam1', 'exam2', 'exam3', 'exam4', 'exam5'], 'in', 'range' => Yii::$app->params['validExamMarks']],
             [['name'], 'string'],
             [['credit1', 'credit2', 'credit3', 'credit4', 'credit5'], 'boolean'],
@@ -67,6 +74,9 @@ class StudentsSearchForm extends yii\base\Model {
             'exam3' => 'Exam №3 (filter)',
             'exam4' => 'Exam №4 (filter)',
             'exam5' => 'Exam №5 (filter)',
+            'debts' => 'Debts (filter)',
+            'avr_score' => 'Avr. Score (filter)',
+            'avr_group_score' => 'Avr. Group Score (filter)',
         ];
     }
 

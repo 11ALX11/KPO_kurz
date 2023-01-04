@@ -75,7 +75,7 @@ class StudentsController extends \yii\web\Controller
 
     public function actionDebts()
     {
-        $query = Students::find()->select('group, name, AS debts, AS avr_score, AVG(avr_score) AS avr_group_score')->where(['record_status' => 'ACTIVE']);
+        $query = Students::find()->where(['record_status' => 'ACTIVE']);
 
         $search_model = new StudentsSearchForm();
         if ($search_model->load(Yii::$app->request->get())) {
@@ -122,12 +122,16 @@ class StudentsController extends \yii\web\Controller
             ],
         ]);
 
+        foreach ($provider->getModels() as $model) {
+            $model->updateAvrGroupScore();
+        }
+
         $data['students'] = $provider->getModels();
         $data['pagination'] = $provider->getPagination();
         $data['search_model'] = $search_model;
         $data['errors'] = $search_model->getErrorSummary(true);
 
-        return $this->render('index', [
+        return $this->render('debts', [
             'data' => $data,
         ]);
     }
